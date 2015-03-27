@@ -10,8 +10,9 @@ import sys
 import datetime
 
 DEBUG = 0
-apiURL = 'http://xxx.atlassian.net/rest/api/2/search'
-baseURL = 'https://xxx.atlassian.net/browse/'
+domainName = 'xxx.atlassian.net'
+apiURL = 'http://%s/rest/api/2/search' % domainName
+baseURL = 'https://%s/browse/' % domainName
 
 # mail options
 mailServer = 'mail.abc.com.tw'
@@ -21,17 +22,16 @@ mailList = [ 'aaa@abc.com.tw', 'bbb@abc.com.tw', ]
 # encoded using Base64 "username:password"
 authStr = 'Basic YWFhOmFiYw=='
 
-period = '24h'
 limits = 'startAt=0&fields=issuetype,summary,assignee,reporter,priority,status,resolution,created,updated'
 qrystrs = {
 	0: {    'name': 'Created',
-					'qrystr': '%s&jql=created>=-%s+order+by+status+desc,created+desc' % ( limits, period ) },
+					'qrystr': '%s&jql=created>=-24h+order+by+status+desc,created+desc' % limits },
 	1: {    'name': 'Created but not resolved',
-					'qrystr': '%s&jql=status=open+and+created>=-%s+order+by+status+desc,created+desc' % ( limits, period ) },
+					'qrystr': '%s&jql=status=open+and+created>=-24h+order+by+status+desc,created+desc' % limits },
 	2: {    'name': 'Have updated',
-					'qrystr': '%s&jql=updated>=-%s+order+by+status+desc,created+desc' % ( limits, period ) },
+					'qrystr': '%s&jql=updated>=-24h+order+by+status+desc,created+desc' % limits },
 	3: {    'name': 'Have resolved',
-					'qrystr': '%s&jql=status=resolved+and+updated>=-%s+order+by+status+desc,created+desc' % ( limits, period ) }
+					'qrystr': '%s&jql=status=resolved+and+updated>=-24h+order+by+status+desc,created+desc' % limits }
 }
 
 def main():
